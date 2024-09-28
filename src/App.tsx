@@ -8,9 +8,7 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={
-            <CoverPage onStart={() => {}} totalQuestions={10} timeLimit={60} />
-          }
+          element={<CoverPage totalQuestions={10} timeLimit={60} />}
         />
         <Route path="/quiz" element={<QuizPage />} />
       </Routes>

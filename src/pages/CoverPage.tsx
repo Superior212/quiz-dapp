@@ -10,7 +10,6 @@ import { Brain, Trophy, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface CoverPageProps {
-  onStart: () => void;
   totalQuestions: number;
   timeLimit: number;
 }
