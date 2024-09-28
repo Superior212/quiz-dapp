@@ -7,22 +7,32 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { CheckCircle2, XCircle, HelpCircle } from "lucide-react";
+import { Button } from "./ui/button";
 
+// Define the structure of a question
 interface Question {
   question: string;
   correctAnswer: string;
 }
 
+// Define the props for the Result component
 interface ResultProps {
   questions: Question[];
   userAnswers: string[];
+  onRestart: () => void;
 }
 
-export default function Result({ questions, userAnswers }: ResultProps) {
+export default function Result({
+  questions,
+  userAnswers,
+  onRestart,
+}: ResultProps) {
+  // Calculate the score by comparing user answers with correct answers
   const score = questions.reduce((acc, question, index) => {
     return userAnswers[index] === question.correctAnswer ? acc + 1 : acc;
   }, 0);
 
+  // Calculate the percentage score
   const percentage = (score / questions.length) * 100;
 
   return (
@@ -33,6 +43,7 @@ export default function Result({ questions, userAnswers }: ResultProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Display the overall score and percentage */}
         <div className="text-center">
           <p className="text-4xl font-bold mb-2">
             {score} / {questions.length}
@@ -43,6 +54,7 @@ export default function Result({ questions, userAnswers }: ResultProps) {
           </p>
         </div>
 
+        {/* Accordion to display each question and answer */}
         <Accordion type="single" collapsible className="w-full">
           {questions.map((question, index) => {
             const userAnswer = userAnswers[index];
@@ -52,6 +64,7 @@ export default function Result({ questions, userAnswers }: ResultProps) {
               <AccordionItem value={`question-${index}`} key={index}>
                 <AccordionTrigger className="text-left">
                   <div className="flex items-center space-x-2">
+                    {/* Display check or cross icon based on correctness */}
                     {isCorrect ? (
                       <CheckCircle2 className="h-5 w-5 text-green-500" />
                     ) : (
@@ -61,12 +74,14 @@ export default function Result({ questions, userAnswers }: ResultProps) {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-2">
+                  {/* Display the question */}
                   <div className="flex items-start space-x-2">
                     <HelpCircle className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
                     <p
                       dangerouslySetInnerHTML={{ __html: question.question }}
                     />
                   </div>
+                  {/* Display user's answer and correct answer */}
                   <div className="pl-7 space-y-1">
                     <p className="text-sm">
                       Your answer:
@@ -95,6 +110,12 @@ export default function Result({ questions, userAnswers }: ResultProps) {
             );
           })}
         </Accordion>
+
+        <div className="text-center">
+          <Button onClick={onRestart} className="mt-4">
+            Restart Quiz
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
